@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StudentController!
+{% endblock %}
+
+{% block body %}
+
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		{% include "sidebar.html.twig" %}
+
+		<!-- Content Wrapper -->
+		<div
+			id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				{% include "topbar.html.twig" %}
+
+				<!-- Begin Page Content -->
+				<div
+					class="container-fluid">
+
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+						<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+							<i class="fas fa-download fa-sm text-white-50"></i>
+							Generate Report</a>
+					</div>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Matricule</th>
+								<th scope="col">Nom</th>
+								<th scope="col">Prénom</th>
+								<th scope="col">Classe</th>
+								<th scope="col">Déjà payé</th>
+								<th scope="col">Restant</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for student in students %}
+
+
+								<tr>
+									<th scope="row">{{ loop.index }}</th>
+									<td>{{student.Matricule}}</td>
+									<td>{{student.firstname}}</td>
+									<td>{{student.lastname}}</td>
+									<td>{{student.classroom}}</td>
+									<td>{{student.totalPaidAmount}}</td>
+									<td>{{student.restToPay}}</td>
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+
+
+					<!-- Content Row -->
+
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+
+			<!-- Footer -->
+			{% include "footer.html.twig" %}
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+{% endblock %}
