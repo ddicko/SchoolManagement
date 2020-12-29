@@ -20,27 +20,26 @@ class EnseignantType extends AbstractType
     {
         $builder
             ->add('firstname', null, [
-                'label'=>'Prénom'
+                'label' => 'Prénom'
             ])
             ->add('lastname', null, [
-                'label'=>'Nom'
+                'label' => 'Nom'
             ])
             ->add('phonenumbers', null, [
-                'label'=>'Numéros de téléphone'
+                'label' => 'Numéros de téléphone'
             ])
             ->add('age', null, [
-                'label'=>'Date de naissance'
+                'label' => 'Date de naissance'
             ])
             ->add('address', null, [
-                'label'=>'Adresse'
+                'label' => 'Adresse'
             ])
             ->add('siteweb', null, [
-                'label'=>'Site Web'
+                'label' => 'Site Web'
             ])
             ->add('speciality', EntityType::class, [
-                'class'=>Matter::class,
-                'choice_label'=>'name',
-                'expanded'     => true,
+                'class' => Matter::class,
+                'choice_label' => 'name',
                 'multiple'     => true,
             ])
             ->add('Creer', SubmitType::class)

@@ -1,0 +1,77 @@
+{% for message in app.flashes('succespaieetudiant') %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Super!</strong>
+
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('errorpaieetudiant') %}
+	<div class="alert alert-warning alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Attention!</strong>
+
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('succesenseignant') %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Super!</strong>
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('succesclasse') %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Super!</strong>
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('succesinscriptionetudiant') %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Super!</strong>
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+
+{% for message in app.flashes('succesmatter') %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Super!</strong>
+		<div class="flash-notice">
+			{{ message }}
+		</div>
+	</div>
+{% endfor %}

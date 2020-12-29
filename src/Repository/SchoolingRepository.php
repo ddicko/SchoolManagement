@@ -22,13 +22,12 @@ class SchoolingRepository extends ServiceEntityRepository
     /**
       * @return Schooling[] Returns an array of Schooling objects
       */
-    public function findByStudent($value)
+    public function findByStudent($id)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.student = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $id)
             ->orderBy('s.id', 'DESC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

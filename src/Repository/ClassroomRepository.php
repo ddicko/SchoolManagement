@@ -36,6 +36,14 @@ class ClassroomRepository extends ServiceEntityRepository
     }
     */
 
+    public function countClasse()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('COUNT(c.id) as value');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Classroom
     {

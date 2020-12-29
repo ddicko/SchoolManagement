@@ -54,9 +54,20 @@ class Enseignant
      */
     private $siteweb;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TeacherRemuneration::class, mappedBy="teacher")
+     */
+    private $teacherRemunerations;
+
+    // /**
+    //  * @ORM\Column(type="json")
+    //  */
+    private $paidAmounts = [];
+
     public function __construct()
     {
         $this->speciality = new ArrayCollection();
+        $this->teacherRemunerations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +167,56 @@ class Enseignant
     public function setSiteweb(?string $siteweb): self
     {
         $this->siteweb = $siteweb;
+
+        return $this;
+    }
+    /**
+     * toString
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->phonenumbers;
+    }
+
+    /**
+     * @return Collection|TeacherRemuneration[]
+     */
+    public function getTeacherRemunerations(): Collection
+    {
+        return $this->teacherRemunerations;
+    }
+
+    public function addTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if (!$this->teacherRemunerations->contains($teacherRemuneration)) {
+            $this->teacherRemunerations[] = $teacherRemuneration;
+            $teacherRemuneration->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if ($this->teacherRemunerations->removeElement($teacherRemuneration)) {
+            // set the owning side to null (unless already changed)
+            if ($teacherRemuneration->getTeacher() === $this) {
+                $teacherRemuneration->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPaidAmount(): array
+    {
+        return $this->paidAmounts;
+    }
+
+    public function setPaidAmount($paidAmounts, $key): self
+    {
+        $this->paidAmounts[$key] = $paidAmounts;
 
         return $this;
     }

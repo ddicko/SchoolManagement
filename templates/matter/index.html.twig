@@ -31,6 +31,7 @@
 							<i class="fas fa-download fa-sm text-white-50"></i>
 							Generate Report</a>
 					</div>
+					{% include "notifications.html.twig" %}
 
 					{{ form_start(form) }}
 
@@ -45,9 +46,19 @@
 						<div class="col-xl-3 col-md-6 mb-4">
 							{{ form_row(form.hours) }}
 						</div>
+						<div class="col-xl-3 col-md-6 mb-4">
+							{{ form_row(form.classroom) }}
+						</div>
+						<div class="col-xl-3 col-md-6 mb-4">
+							{{ form_row(form.enseignants) }}
+						</div>
+
+						<div class="col-xl-3 col-md-6 mb-4">
+							{{ form_row(form.amountPaidForMatter) }}
+						</div>
 
 
-						<div>
+						<div class="col-xl-3 col-md-6 mb-4">
 							<button type="submit" class="btn btn-primary btn-lg">Créer</button>
 
 						</div>
@@ -60,20 +71,47 @@
 
 					<!-- Content Row -->
 
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nom</th>
+								<th scope="col">Hours</th>
+								<th scope="col">Classe</th>
+								<th scope="col">Montant</th>
+								<th scope="col">Enseignant</th>
 
-				</div>
-				<!-- /.container-fluid -->
 
-			</div>
-			<!-- End of Main Content -->
+							</tr>
+						</thead>
+						<tbody>
 
-			<!-- Footer -->
-			{% include "footer.html.twig" %}
-			<!-- End of Footer -->
 
-		</div>
-		<!-- End of Content Wrapper -->
+							{% for matter in matterliste %}
 
-	</div>
-	<!-- End of Page Wrapper -->
-{% endblock %}
+								<tr>
+									<th scope="row">{{ loop.index }}</th>
+									<td>{{matter.name}}</td>
+									<td>{{matter.hours}}</td>
+									<td>{{matter.classroom}}</td>
+									<td>{{matter.amountPaidForMatter | number_format(0, '', ' ')}}</td>
+									<td>
+										{% for item in matter.enseignants %}
+											{{item.firstname}}
+										{% endfor %}
+									</td>
+								{% endfor %}
+
+
+							</tr>
+						</tbody>
+					</tbody>
+
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+
+
+</div>
+<!-- /.container-fluid --></div><!-- End of Main Content --><!-- Footer -->{% include "footer.html.twig" %}<!-- End of Footer --></div><!-- End of Content Wrapper --></div><!-- End of Page Wrapper -->{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Matter;
 use App\Form\MatterType;
+use App\Repository\EnseignantRepository;
 use App\Repository\MatterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ class MatterController extends AbstractController
     /**
      * @Route("/ajout-matter", name="ajoutmatter")
      */
-    public function add(Request $request, EntityManagerInterface $em): Response
+    public function add(Request $request, EntityManagerInterface $em, MatterRepository $matterRepository): Response
     {
         // création d'un Objet matter
         $matter = new Matter();
@@ -28,11 +29,14 @@ class MatterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($matter);
             $em->flush();
-            return $this->redirectToRoute('matter');
+            $this->addFlash("succesmatter", "Matière ajouté avec succès!");
+            return $this->redirectToRoute('ajoutmatter');
         }
 
         return $this->render('matter/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'matterliste' => $matterRepository->findBySomeLimit(5),
+
         ]);
     }
 
@@ -42,10 +46,22 @@ class MatterController extends AbstractController
      * @param MatterRepository $matterRepository
      * @Route("/matter/liste", name="listematter")
      */
-    public function listeMatter(MatterRepository $matterRepository)
+    public function listeMatter(MatterRepository $matterRepository, EnseignantRepository $enseignantRepository)
     {
-        return $this->render('matter/liste.html.twig',[
-            'listematter' => $matterRepository->findAll()
+
+        $sumcalcul = $matterRepository->findAll();
+
+        $total = 0;
+
+        foreach ($sumcalcul as $summmatter) {
+            $total += $summmatter->getAmountPaidForMatter();
+        }
+
+        //dd($total);
+        return $this->render('matter/liste.html.twig', [
+            'listematter' => $matterRepository->findAll(),
+            'total' => $total,
+            'listeenseignant' => $enseignantRepository->findAll()
         ]);
     }
 }

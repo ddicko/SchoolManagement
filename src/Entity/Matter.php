@@ -34,9 +34,33 @@ class Matter
      */
     private $enseignants;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Classroom::class, inversedBy="matters")
+     */
+    private $classroom;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $amountPaidForMatter;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TeacherRemuneration::class, mappedBy="matter")
+     */
+    private $teacherRemunerations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Note::class, mappedBy="matter")
+     */
+    private $notes;
+
+
+
     public function __construct()
     {
         $this->enseignants = new ArrayCollection();
+        $this->teacherRemunerations = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,11 +120,92 @@ class Matter
     }
 
     /**
-    * toString
-    * @return string
-    */
+     * toString
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getClassroom(): ?Classroom
+    {
+        return $this->classroom;
+    }
+
+    public function setClassroom(?Classroom $classroom): self
+    {
+        $this->classroom = $classroom;
+
+        return $this;
+    }
+
+    public function getAmountPaidForMatter(): ?int
+    {
+        return $this->amountPaidForMatter;
+    }
+
+    public function setAmountPaidForMatter(?int $amountPaidForMatter): self
+    {
+        $this->amountPaidForMatter = $amountPaidForMatter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TeacherRemuneration[]
+     */
+    public function getTeacherRemunerations(): Collection
+    {
+        return $this->teacherRemunerations;
+    }
+
+    public function addTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if (!$this->teacherRemunerations->contains($teacherRemuneration)) {
+            $this->teacherRemunerations[] = $teacherRemuneration;
+            $teacherRemuneration->setMatter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if ($this->teacherRemunerations->removeElement($teacherRemuneration)) {
+            // set the owning side to null (unless already changed)
+            if ($teacherRemuneration->getMatter() === $this) {
+                $teacherRemuneration->setMatter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->addMatter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            $note->removeMatter($this);
+        }
+
+        return $this;
     }
 }

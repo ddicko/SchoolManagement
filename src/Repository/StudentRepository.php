@@ -19,23 +19,37 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
-    // /**
-    //  * @return Student[] Returns an array of Student objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Student[] Returns an array of Student objects
+     */
+    public function findBySomeLimit($limit)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
+
+    public function countStudent()
+    {
+        $class =
+            $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s.id) as value');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    public function countStudentByClassroom()
+    {
+
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s.id) as value')
+            ->where("s.classroom = 4");
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
     /*
     public function findOneBySomeField($value): ?Student
     {

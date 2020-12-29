@@ -35,6 +35,19 @@ class MatterRepository extends ServiceEntityRepository
         ;
     }
     */
+    /**
+     * @return Matter[] Returns an array of Matter objects
+     */
+    public function findBySomeLimit($limit)
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     /*
     public function findOneBySomeField($value): ?Matter

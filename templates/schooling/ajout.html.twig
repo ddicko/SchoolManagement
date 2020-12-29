@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous"/>
+
+
+{% endblock %}
+
 {% block title %}Hello StudentController!
 {% endblock %}
 
@@ -32,60 +39,56 @@
 							Generate Report</a>
 					</div>
 
+					{% include "notifications.html.twig" %}
+
+
 					{{ form_start(form) }}
 
 					<!-- Content Row -->
-					<div
-						class="row">
-
-
-						{#
-																		<div class="col-xl-3 col-md-6 mb-4">
-																			{{ form_row(form.paidAt) }}
-																		</div>
-																		<div class="col-xl-3 col-md-6 mb-4">
-																			{{ form_row(form.remainingAmount) }}
-																		</div>-->#}
-
+					<div class="row">
 						<div class="col-xl-3 col-md-6 mb-4">
 							{{ form_row(form.paidAmount) }}
 						</div>
 
 
-						<div class="col-xl-3 col-md-6 mb-4">
-							{{ form_row(form.student) }}
+					</script>
 
-						</div>
-
-
-						<div>
-							<button type="submit" class="btn btn-primary btn-lg">Créer</button>
-
-						</div>
-
+					<div class="col-xl-3 col-md-6 mb-4 ">
+						{{ form_row(form.student) }}
 
 					</div>
 
-					{{ form_end(form) }}
 
+					<div>
+						<button type="submit" class="btn btn-primary btn-lg">Créer</button>
 
-					<!-- Content Row -->
+					</div>
 
 
 				</div>
-				<!-- /.container-fluid -->
+
+				{{ form_end(form) }}
+
+
+				<!-- Content Row -->
+
 
 			</div>
-			<!-- End of Main Content -->
-
-
-			<!-- Footer -->
-			{% include "footer.html.twig" %}
-			<!-- End of Footer -->
+			<!-- /.container-fluid -->
 
 		</div>
-		<!-- End of Content Wrapper -->
+		<!-- End of Main Content -->
+
+
+		<!-- Footer -->
+		{% include "footer.html.twig" %}
+		<!-- End of Footer -->
 
 	</div>
-	<!-- End of Page Wrapper -->
-{% endblock %}
+	<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+{% block javascript %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
+{% endblock %}{% endblock %}

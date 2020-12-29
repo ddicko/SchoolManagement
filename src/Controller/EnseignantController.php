@@ -18,19 +18,12 @@ class EnseignantController extends AbstractController
      * Undocumented function
      * @Route("enseignant/ajout", name="ajoutenseignant")
      */
-    public function add(Request $request, EntityManagerInterface $em)
+    public function add(Request $request, EntityManagerInterface $em, EnseignantRepository $enseignantRepository)
     {
         $enseignant = new Enseignant();
 
-        $form = $this->createForm(EnseignantType::class,$enseignant);
+        $form = $this->createForm(EnseignantType::class, $enseignant);
 
-        // $year=$request->request->all()['enseignant']['age']['year'];
-        
-        // $year2=date('Y');
-
-        // $request->request->all()['enseignant']['age']=$year2-$year;
-        
-        // dd($year2-$year, $request->request->all()['enseignant']['age']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,12 +33,14 @@ class EnseignantController extends AbstractController
 
             $em->persist($enseignant);
             $em->flush();
+
+            $this->addFlash("succesenseignant", "Enseignant ajouté avec succès!");
         }
 
-        return $this->render('enseignant/ajout.html.twig',[
-            'form' => $form->createView()
+        return $this->render('enseignant/ajout.html.twig', [
+            'form' => $form->createView(),
+            'listeenseignant' => $enseignantRepository->findBySomeLimit(5)
         ]);
-        
     }
 
     /**

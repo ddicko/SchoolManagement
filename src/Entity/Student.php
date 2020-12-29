@@ -70,14 +70,31 @@ class Student
      */
     private $classroom;
 
-    public $totalPaidAmount;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $totalPaidAmount;
 
-    public $restToPay;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $restToPay;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="student")
+     */
+    private $note;
 
     public function __construct()
     {
         $this->registeredAt = new DateTime();
         $this->schooling = new ArrayCollection();
+        $this->note = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,11 +241,77 @@ class Student
     }
 
     /**
-    * toString
-    * @return string
-    */
+     * toString
+     * @return string
+     */
     public function __toString()
     {
         return $this->matricule;
+    }
+
+    public function getTotalPaidAmount(): int
+    {
+        return $this->totalPaidAmount;
+    }
+
+    public function setTotalPaidAmount(int $totalPaidAmount): self
+    {
+        $this->totalPaidAmount = $totalPaidAmount;
+
+        return $this;
+    }
+
+    public function getRestToPay(): int
+    {
+        return $this->restToPay;
+    }
+
+    public function setRestToPay(int $restToPay): self
+    {
+        $this->restToPay = $restToPay;
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNote(): Collection
+    {
+        return $this->note;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->note->contains($note)) {
+            $this->note[] = $note;
+            $note->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->note->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getStudent() === $this) {
+                $note->setStudent(null);
+            }
+        }
+
+        return $this;
     }
 }

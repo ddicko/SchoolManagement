@@ -39,38 +39,45 @@
 								<th scope="col">#</th>
 								<th scope="col">Nom</th>
 								<th scope="col">Hours</th>
+								<th scope="col">Classe</th>
+								<th scope="col">Montant</th>
+								<th scope="col">Enseignant</th>
+
 
 							</tr>
 						</thead>
 						<tbody>
 
+
 							{% for matter in listematter %}
-
-
 								<tr>
 									<th scope="row">{{ loop.index }}</th>
 									<td>{{matter.name}}</td>
 									<td>{{matter.hours}}</td>
-								</tr>
-							{% endfor %}
+									<td>{{matter.classroom}}</td>
+									<td>{{matter.amountPaidForMatter | number_format(0, '', ' ')}}</td>
+									<td>
+										{% for item in matter.enseignants %}
+											{{item.firstname}}
+										{% endfor %}
+									</td>
+								{% endfor %}
 
+
+							</tr>
 						</tbody>
-					</table>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3"></td>
+							<td>Total:</td>
+							<td>{{total| number_format(0, '', ' ')}}</td>
+							Fcfa</tr>
+					</tfoot>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
 
-				</div>
-				<!-- /.container-fluid -->
-
-			</div>
-			<!-- End of Main Content -->
-
-			<!-- Footer -->
-			{% include "footer.html.twig" %}
-			<!-- End of Footer -->
-
-		</div>
-		<!-- End of Content Wrapper -->
-
-	</div>
-
-
-{% endblock %}
+</div>
+<!-- /.container-fluid --></div><!-- End of Main Content --><!-- Footer -->{% include "footer.html.twig" %}<!-- End of Footer --></div><!-- End of Content Wrapper --></div>{% endblock %}

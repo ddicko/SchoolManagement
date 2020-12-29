@@ -36,6 +36,25 @@ class EnseignantRepository extends ServiceEntityRepository
     }
     */
 
+    public function countEnseignant()
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->select('COUNT(e.id) as value');
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return Enseignant[] Returns an array of Enseignant objects
+     */
+    public function findBySomeLimit($limit)
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?Enseignant
     {

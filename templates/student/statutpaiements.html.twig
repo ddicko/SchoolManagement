@@ -42,6 +42,7 @@
 								<th scope="col">Classe</th>
 								<th scope="col">Déjà payé</th>
 								<th scope="col">Restant</th>
+								<th scope="col">Status</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -54,8 +55,11 @@
 									<td>{{student.firstname}}</td>
 									<td>{{student.lastname}}</td>
 									<td>{{student.classroom}}</td>
-									<td>{{student.totalPaidAmount}}</td>
-									<td>{{student.restToPay}}</td>
+									<td>{{student.totalPaidAmount}}
+										Fcfa</td>
+									<td>{{student.restToPay}}
+										Fcfa</td>
+									<td>{{student.status}}</td>
 								</tr>
 							{% endfor %}
 

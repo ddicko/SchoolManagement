@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Classroom;
 use App\Entity\Schooling;
 use App\Form\SchoolingType;
-use App\Repository\ClassroomRepository;
+use App\Repository\SchoolingRepository;
+use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,7 @@ class SchoolingController extends AbstractController
      * @param EntityManagerInterface $em
      * @Route("/paiement/schoolarité", name="paiement")
      */
-    public function add(Request $request, EntityManagerInterface $em)
+    public function add(Request $request, EntityManagerInterface $em, SchoolingRepository $schoolingRepository, StudentRepository $studentRepository)
     {
         $schooling = new Schooling();
 
@@ -40,8 +40,54 @@ class SchoolingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($schooling);
-            $em->flush();
+
+
+            $id = intval($request->request->all()["schooling"]["student"]);
+
+            // dd(intval($request->request->all()["schooling"]["student"]));
+            $student = $studentRepository->findOneBy(['id' => $id]);
+
+            $firstMountPaidForm = $request->request->all()["schooling"]["paidAmount"];
+
+
+            if (!empty($schoolingRepository->findByStudent($id))) {
+                $somme = 0;
+
+                foreach ($schoolingRepository->findByStudent($id) as $studentSchooling) {
+                    $somme += $studentSchooling->getPaidAmount();
+                }
+
+                $student->setTotalPaidAmount($somme + $firstMountPaidForm);
+
+                $student->setRestToPay(intval($student->getClassroom()->getAmount() - ($somme + $firstMountPaidForm)));
+
+                if ($student->getRestToPay() <= 0) {
+                    $student->setStatus("Completed");
+                } else {
+                    $student->setStatus("NOT Completed");
+                }
+            } else {
+
+                $student->setTotalPaidAmount($firstMountPaidForm)
+                    ->setRestToPay($student->getClassroom()->getAmount() - $firstMountPaidForm);
+                if (($student->getClassroom()->getAmount() - $firstMountPaidForm) <= 0) {
+                    $student->setStatus("Completed");
+                } else {
+                    $student->setStatus("NOT Completed");
+                }
+            }
+
+            $rest = $student->getRestToPay() >= 0 ? $student->getRestToPay() : 0;
+
+            if ($student->getRestToPay() < 0) {
+                $this->addFlash("errorpaieetudiant", "l'etudiant vous doit moins que ça!, il vous doit $rest Fcfa!");
+            } else {
+                $em->persist($student);
+                $em->persist($schooling);
+
+                $em->flush();
+                $this->addFlash("succespaieetudiant", "Paiement Effectué avec succès!");
+            }
 
             return $this->redirectToRoute('paiement');
         }

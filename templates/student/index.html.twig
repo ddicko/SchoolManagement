@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello StudentController!
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -32,6 +33,7 @@
 							Generate Report</a>
 					</div>
 
+					{% include "notifications.html.twig" %}
 					{{ form_start(form) }}
 
 					<!-- Content Row -->
@@ -62,15 +64,14 @@
 							{{ form_row(form.address) }}
 						</div>
 
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-3 col-md-6 mb-4" id="select">
 							{{ form_row(form.classroom) }}
 
 						</div>
 
 
-						<div>
-							<button type="submit" class="btn btn-primary btn-lg">Créer</button>
-
+						<div class="col-xl-3 col-md-6 mb-4">
+							<button type="submit" class="btn btn-primary btn-lg btn-block">Créer</button>
 						</div>
 
 
@@ -80,6 +81,39 @@
 
 
 					<!-- Content Row -->
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Matricule</th>
+								<th scope="col">Nom</th>
+								<th scope="col">Prénom</th>
+								<th scope="col">Age</th>
+								<th scope="col">Sexe</th>
+								<th scope="col">Adresse</th>
+								<th scope="col">Classe</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for student in listestudent %}
+
+								<tr>
+									<th scope="row">{{ loop.index }}</th>
+									<td>{{student.Matricule}}</td>
+									<td>{{student.firstname}}</td>
+									<td>{{student.lastname}}</td>
+									<td>{{student.age}}</td>
+									<td>{{student.Sexe}}</td>
+									<td>{{student.address}}</td>
+									<td>{{student.classroom}}</td>
+
+
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
 
 
 				</div>
@@ -98,4 +132,13 @@
 
 	</div>
 	<!-- End of Page Wrapper -->
+
+	{% block javascripts %}
+		<script>
+			$(document).ready(function () {
+$('.select-class').select2();
+$('')
+});
+		</script>
+	{% endblock %}
 {% endblock %}

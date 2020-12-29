@@ -34,9 +34,21 @@ class Classroom
      */
     private $students;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Matter::class, mappedBy="classroom")
+     */
+    private $matters;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TeacherRemuneration::class, mappedBy="classroom")
+     */
+    private $teacherRemunerations;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->matters = new ArrayCollection();
+        $this->teacherRemunerations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,5 +116,65 @@ class Classroom
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Matter[]
+     */
+    public function getMatters(): Collection
+    {
+        return $this->matters;
+    }
+
+    public function addMatter(Matter $matter): self
+    {
+        if (!$this->matters->contains($matter)) {
+            $this->matters[] = $matter;
+            $matter->setClassroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatter(Matter $matter): self
+    {
+        if ($this->matters->removeElement($matter)) {
+            // set the owning side to null (unless already changed)
+            if ($matter->getClassroom() === $this) {
+                $matter->setClassroom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TeacherRemuneration[]
+     */
+    public function getTeacherRemunerations(): Collection
+    {
+        return $this->teacherRemunerations;
+    }
+
+    public function addTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if (!$this->teacherRemunerations->contains($teacherRemuneration)) {
+            $this->teacherRemunerations[] = $teacherRemuneration;
+            $teacherRemuneration->setClassroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacherRemuneration(TeacherRemuneration $teacherRemuneration): self
+    {
+        if ($this->teacherRemunerations->removeElement($teacherRemuneration)) {
+            // set the owning side to null (unless already changed)
+            if ($teacherRemuneration->getClassroom() === $this) {
+                $teacherRemuneration->setClassroom(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -27,8 +27,8 @@ class ClassroomController extends AbstractController
      *@Route("/classe/ajout", name = "ajoutclass")
      *  
      */
-     public function addClassroom(Request $request, EntityManagerInterface $em)
-     {
+    public function addClassroom(Request $request, EntityManagerInterface $em)
+    {
 
         $classroom = new Classroom();
 
@@ -39,11 +39,12 @@ class ClassroomController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($classroom);
             $em->flush();
+            $this->addFlash("succesclasse", "Classe ajouté avec succès!");
             return  $this->redirectToRoute('ajoutclass');
         }
-      
+
         return $this->render('classroom/ajout.html.twig', [
             'form' => $form->createView()
         ]);
-     }
+    }
 }
